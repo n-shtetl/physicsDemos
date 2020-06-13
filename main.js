@@ -4,20 +4,27 @@ window.onload = function() {
     const width = canvas.width = window.innerWidth;
     const height = canvas.height = window.innerHeight;
 
-    let position = new Vector(100,100);
-    let velocity = new Vector(0,0);
-    velocity.setLength(1);
-    velocity.setAngle(Math.PI/2.1)
-    console.log(velocity);
+    const particles = [];
+    const numParticles = 300;
+    const gravity = new Vector(0, 0.1);
+
+    for (let i = 0; i < numParticles; i++) {
+        let p = new Particle(width / 2, height / 3, Math.random()*3+1, Math.random() * Math.PI * 2, Math.random(), Math.random())
+        particles.push(p); 
+    }
+
     update();
 
     function update() {
         context.clearRect(0,0,width,height);
-
-        position = position.add(velocity);
-        context.beginPath();
-        context.arc(position.getX(), position.getY(), 10, 0, Math.PI*2, false);
-        context.fill();
+        particles.forEach(particle => {
+            particle.accelerate(gravity);
+            particle.update();
+            context.beginPath();
+            context.arc(particle.position.getX(), particle.position.getY(), 5, 0, Math.PI*2, false);
+            context.fill();
+        })
+        
 
         requestAnimationFrame(update);
     }
