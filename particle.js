@@ -15,5 +15,4 @@ class Particle {
         this.position = this.position.add(this.velocity);
     }
 
-    
 }
